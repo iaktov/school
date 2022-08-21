@@ -14,32 +14,35 @@ public class FacultyService {
     private final HashMap<Long, Faculty> faculties = new HashMap<>();
     private long lastId = 0;
 
-    public Faculty createStudents(Faculty faculty) {
+    public Faculty createFaculty(Faculty faculty) {
         faculty.setId(++lastId);
-        faculties.put(lastId,faculty);
+        faculties.put(faculty.getId(),faculty);
         return faculty;
     }
 
     public Collection<Faculty> findFacultyByColor(String color) {
-        Collection<Faculty>  newFaculty = new ArrayList<>();
+        Collection<Faculty>  result = new ArrayList<>();
         for (Faculty faculty:faculties.values()) {
             if (faculty.getColor().equals(color)) {
-                newFaculty.add(faculty);
+                result.add(faculty);
             }
         }
-        return newFaculty;
+        return result;
     }
 
-    public Faculty findStudent(Long id) {
+    public Faculty findFaculty(long id) {
         return faculties.get(id);
     }
 
-    public Faculty editStudent(Faculty faculty) {
-        faculties.put(faculty.getId(), faculty);
+    public Faculty editFaculty(long id, Faculty faculty) {
+        if (!faculties.containsKey(id)) {
+            return null;
+        }
+        faculties.put(id, faculty);
         return faculty;
     }
 
-    public Faculty deleteStudent(Long id) {
+    public Faculty deleteStudent(long id) {
         return faculties.remove(id);
     }
 }

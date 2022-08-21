@@ -16,30 +16,33 @@ public class StudentService {
 
     public Student createStudents(Student student) {
         student.setId(++lastId);
-        students.put(lastId,student);
+        students.put(student.getId(),student);
         return student;
     }
 
-    public Student findStudent(Long id) {
+    public Student findStudent(long id) {
         return students.get(id);
     }
 
     public Collection<Student> findStudentByAge(int age) {
-        Collection<Student>  newStudents = new ArrayList<>();
+        Collection<Student>  result = new ArrayList<>();
         for (Student student:students.values()) {
             if (student.getAge() == age) {
-                newStudents.add(student);
+                result.add(student);
             }
         }
-        return newStudents;
+        return result;
     }
 
-    public Student editStudent(Student student) {
-        students.put(student.getId(), student);
+    public Student editStudent(long id,Student student) {
+        if (!students.containsKey(id)) {
+            return null;
+        }
+        students.put(id, student);
         return student;
     }
 
-    public Student deleteStudent(Long id) {
+    public Student deleteStudent(long id) {
         return students.remove(id);
     }
 
