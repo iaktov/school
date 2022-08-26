@@ -27,7 +27,7 @@ public class StudentService {
     }
 
     public Collection<Student> findStudentByAge(int age) {
-        return studentRepository.findAll();
+        return studentRepository.findByAge(age);
     }
 
     public Student editStudent(Student student) {

@@ -1,58 +1,110 @@
-//package ru.hogwarts.school;
-//
-//import org.junit.jupiter.api.Test;
-//import ru.hogwarts.school.Model.Student;
-//import ru.hogwarts.school.Service.StudentService;
-//
-//import static org.assertj.core.api.Assertions.assertThat;
-//import static org.junit.jupiter.api.Assertions.assertNull;
-//
-//public class StudentServiceTest {
-//
-//    StudentService actual = new StudentService();
-//
-//    Student firstParam = new Student(1L, "Harry Potter", 13);
-//    Student secondParam = new Student(2L, "Ron Wesley", 12);
-//    Student thirdParam = new Student(2L, "Ron Wesley", 13);
-//
-//    @Test
-//    public void createStudentTest() {
-//        assertThat(actual.createStudents(firstParam).equals(firstParam));
-//    }
-//
-//    @Test
-//    public void editStudentTest() {
-//        actual.createStudents(firstParam);
-//        actual.createStudents(secondParam);
-//        assertThat(actual.editStudent(2L, thirdParam).equals(thirdParam));
-//    }
-//
-//    @Test
-//    public void deleteStudentTest() {
-//        actual.createStudents(firstParam);
-//        actual.deleteStudent(1L);
-//        assertThat(actual.equals(null));
-//    }
-//
-//    @Test
-//    public void editStudentFailedTest() {
-//        assertNull(actual.editStudent(3L, thirdParam));
-//    }
-//
-//    @Test
-//    public void findStudentByIdTest() {
-//        actual.createStudents(firstParam);
-//        actual.createStudents(secondParam);
-//        assertThat(actual.findStudent(2L).equals(secondParam));
-//    }
-//
-//    @Test
-//    public void findStudentsByAge() {
-//        actual.createStudents(firstParam);
-//        actual.createStudents(secondParam);
-//        assertThat(actual.findStudentByAge(13).equals(firstParam));
-//    }
-//
-//
-//
-//}
+package ru.hogwarts.school;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import ru.hogwarts.school.Model.Student;
+import ru.hogwarts.school.Service.StudentService;
+import ru.hogwarts.school.repository.StudentRepository;
+
+import java.util.Collections;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
+
+
+@ExtendWith(MockitoExtension.class)
+public class StudentServiceTest {
+
+    @Mock
+    private StudentRepository studentRepository;
+
+    @InjectMocks
+    private StudentService studentService;
+
+    @Test
+    public void addStudentTest() {
+        Student testStudent = new Student();
+        testStudent.setName("StudentName");
+        testStudent.setAge(23);
+        testStudent.setId(1L);
+        when(studentRepository.save(testStudent)).thenReturn(testStudent);
+        assertThat(studentRepository.save(testStudent)).isEqualTo(studentService.createStudents(testStudent));
+    }
+
+    @Test
+    public void findStudentByIdTest() {
+        Student testStudent = new Student();
+        testStudent.setName("StudentName");
+        testStudent.setAge(20);
+        testStudent.setId(1L);
+
+        Student secondStudent = new Student();
+        testStudent.setName("StudentName2");
+        testStudent.setAge(23);
+        testStudent.setId(2L);
+        studentService.createStudents(testStudent);
+        studentService.createStudents(secondStudent);
+
+        when(studentRepository.findById(2L)).thenReturn(Optional.of(secondStudent));
+        assertThat(studentRepository.findById(2L)).contains(studentService.findStudent(2L));
+
+    }
+
+    @Test
+    public void findStudentByAgeTest() {
+        Student testStudent = new Student();
+        testStudent.setName("StudentName");
+        testStudent.setAge(20);
+        testStudent.setId(1L);
+
+        Student secondStudent = new Student();
+        testStudent.setName("StudentName2");
+        testStudent.setAge(23);
+        testStudent.setId(2L);
+        studentService.createStudents(testStudent);
+        studentService.createStudents(secondStudent);
+
+        when(studentRepository.findByAge(23)).thenReturn(Collections.singletonList(secondStudent));
+        assertThat(studentRepository.findByAge(23)).isEqualTo(studentService.findStudentByAge(23));
+
+    }
+
+    @Test
+    public void editStudentTest() {
+        Student testStudent = new Student();
+        testStudent.setName("StudentName");
+        testStudent.setAge(23);
+        testStudent.setId(2L);
+
+        studentService.createStudents(testStudent);
+        testStudent.setName("new faculty");
+
+        when(studentRepository.save(testStudent)).thenReturn(testStudent);
+        assertThat(studentRepository.save(testStudent)).isEqualTo(studentService.editStudent(testStudent));
+    }
+
+    @Test
+    public void deleteStudentTest() {
+        Student testStudent = new Student();
+        testStudent.setName("StudentName");
+        testStudent.setAge(20);
+        testStudent.setId(1L);
+
+        Student secondStudent = new Student();
+        testStudent.setName("StudentName2");
+        testStudent.setAge(23);
+        testStudent.setId(2L);
+
+        studentService.createStudents(testStudent);
+        studentService.createStudents(secondStudent);
+        studentService.deleteStudent(1L);
+        assertThat(studentService).isNotNull();
+    }
+
+
+
+}

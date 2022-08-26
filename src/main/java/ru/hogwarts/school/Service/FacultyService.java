@@ -15,7 +15,7 @@ public class FacultyService {
     private final FacultyRepository facultyRepository;
 
     @Autowired
-    public FacultyService(FacultyRepository facultyRepository) {
+    public FacultyService(FacultyRepository facultyRepository)   {
         this.facultyRepository = facultyRepository;
     }
 
@@ -25,7 +25,7 @@ public class FacultyService {
     }
 
     public Collection<Faculty> findFacultyByColor(String color) {
-        return facultyRepository.findAll();
+        return facultyRepository.findByColor(color);
     }
 
     public Faculty findFaculty(long id) {
