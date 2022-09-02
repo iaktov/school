@@ -56,7 +56,7 @@ public class FacultyServiceTest {
         facultyService.createFaculty(secondFaculty);
 
         when(facultyRepository.findById(2L)).thenReturn(Optional.of(secondFaculty));
-        assertThat(facultyRepository.findById(2L)).contains(facultyService.findFaculty(2L));
+        assertThat(Optional.of(facultyService.findFaculty(2L))).isEqualTo(facultyRepository.findById(2L));
     }
 
     @Test
@@ -74,8 +74,8 @@ public class FacultyServiceTest {
         facultyService.createFaculty(testFaculty);
         facultyService.createFaculty(secondFaculty);
 
-        when(facultyRepository.findByColor("color")).thenReturn(Collections.singletonList(testFaculty));
-        assertThat(facultyRepository.findByColor("color")).isEqualTo(facultyService.findFacultyByColor("color"));
+        when(facultyRepository.findByColorIgnoreCase("color")).thenReturn(Collections.singletonList(testFaculty));
+        assertThat(facultyRepository.findByColorIgnoreCase("color")).isEqualTo(facultyService.findFacultyByColor("color"));
     }
 
 
