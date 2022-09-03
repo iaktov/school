@@ -6,6 +6,8 @@ where age > 23
 select student.name
 from student;
 
+
+
 select *
 from student
 where name like '%o%';
