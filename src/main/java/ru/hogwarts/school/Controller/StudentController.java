@@ -64,7 +64,7 @@ public class StudentController {
     }
 
     //PUT
-    @PutMapping("/{id}")
+    @PutMapping()
     public ResponseEntity<Student> editStudents(@RequestBody Student student) {
         studentService.editStudent(student);
         return ResponseEntity.ok(student);

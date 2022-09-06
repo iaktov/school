@@ -1,7 +1,6 @@
 select *
 from student
-where age > 23
-  and age < 26;
+where age between 23 and 26;
 
 select student.name
 from student;
