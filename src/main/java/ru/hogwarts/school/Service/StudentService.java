@@ -2,12 +2,10 @@ package ru.hogwarts.school.Service;
 
 
 import org.springframework.stereotype.Service;
-import ru.hogwarts.school.Model.Faculty;
 import ru.hogwarts.school.Model.Student;
 import ru.hogwarts.school.repository.StudentRepository;
 
 import java.util.Collection;
-import java.util.List;
 
 @Service
 public class StudentService {
