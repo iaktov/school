@@ -30,8 +30,6 @@ public class StudentController {
         return ResponseEntity.ok(student);
     }
 
-
-
     //GET by age or between
     @GetMapping()
     public ResponseEntity<Collection<Student>> getStudentsByAgeOrAgeBetween(@RequestParam(required = false) Integer age,
@@ -75,7 +73,7 @@ public class StudentController {
 
     //DELETE
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteStudent(@PathVariable Long id) {
+    public ResponseEntity<Faculty> deleteStudent(@PathVariable Long id) {
         studentService.deleteStudent(id);
         return ResponseEntity.ok().build();
     }

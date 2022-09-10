@@ -1,12 +1,13 @@
 package ru.hogwarts.school.Service;
 
+
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.Model.Faculty;
+import ru.hogwarts.school.Model.Student;
 import ru.hogwarts.school.repository.FacultyRepository;
 
-
 import java.util.Collection;
-
+import java.util.List;
 
 @Service
 public class FacultyService {
@@ -16,7 +17,6 @@ public class FacultyService {
     public FacultyService(FacultyRepository facultyRepository)   {
         this.facultyRepository = facultyRepository;
     }
-
 
     public Faculty createFaculty(Faculty faculty) {
         return facultyRepository.save(faculty);
@@ -33,6 +33,8 @@ public class FacultyService {
     public Faculty findFaculty(long id) {
         return facultyRepository.findById(id).orElse(null);
     }
+
+
 
 
     public Faculty editFaculty(Faculty faculty) {
