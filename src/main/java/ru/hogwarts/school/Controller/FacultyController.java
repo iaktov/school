@@ -32,6 +32,7 @@ public class FacultyController {
     }
 
 
+
     //GET by color or Name
     @GetMapping()
     public ResponseEntity<Collection<Faculty>> getFacultyByColorOrName(@RequestParam(required = false)String color,

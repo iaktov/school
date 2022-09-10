@@ -34,6 +34,7 @@ public class FacultyService {
         return facultyRepository.findById(id).orElse(null);
     }
 
+
     public Faculty editFaculty(Faculty faculty) {
         return facultyRepository.save(faculty);
     }
