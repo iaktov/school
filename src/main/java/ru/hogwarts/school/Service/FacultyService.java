@@ -1,45 +1,47 @@
 package ru.hogwarts.school.Service;
 
+
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.Model.Faculty;
+import ru.hogwarts.school.Model.Student;
+import ru.hogwarts.school.repository.FacultyRepository;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-
+import java.util.List;
 
 @Service
 public class FacultyService {
 
-    private final HashMap<Long, Faculty> faculties = new HashMap<>();
-    private long lastId = 0;
+    private final FacultyRepository facultyRepository;
 
-    public Faculty createStudents(Faculty faculty) {
-        faculty.setId(++lastId);
-        faculties.put(lastId,faculty);
-        return faculty;
+    public FacultyService(FacultyRepository facultyRepository)   {
+        this.facultyRepository = facultyRepository;
+    }
+
+    public Faculty createFaculty(Faculty faculty) {
+        return facultyRepository.save(faculty);
     }
 
     public Collection<Faculty> findFacultyByColor(String color) {
-        Collection<Faculty>  newFaculty = new ArrayList<>();
-        for (Faculty faculty:faculties.values()) {
-            if (faculty.getColor().equals(color)) {
-                newFaculty.add(faculty);
-            }
-        }
-        return newFaculty;
+        return facultyRepository.findByColorIgnoreCase(color);
     }
 
-    public Faculty findStudent(Long id) {
-        return faculties.get(id);
+    public Collection<Faculty> findFacultyByName(String name) {
+        return facultyRepository.findByNameIgnoreCase(name);
     }
 
-    public Faculty editStudent(Faculty faculty) {
-        faculties.put(faculty.getId(), faculty);
-        return faculty;
+    public Faculty findFaculty(long id) {
+        return facultyRepository.findById(id).orElseThrow();
     }
 
-    public Faculty deleteStudent(Long id) {
-        return faculties.remove(id);
+
+
+
+    public Faculty editFaculty(Faculty faculty) {
+        return facultyRepository.save(faculty);
+    }
+
+    public void deleteFaculty(long id) {
+        facultyRepository.deleteById(id);
     }
 }
