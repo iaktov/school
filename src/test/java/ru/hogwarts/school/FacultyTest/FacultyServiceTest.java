@@ -1,6 +1,5 @@
-package ru.hogwarts.school;
+package ru.hogwarts.school.FacultyTest;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
