@@ -20,8 +20,7 @@ import ru.hogwarts.school.repository.StudentRepository;
 import java.util.Collections;
 import java.util.Optional;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -63,7 +62,7 @@ public class StudentControllerTest {
 
         when(studentRepository.save(any(Student.class))).thenReturn(student);
         when(studentRepository.findByAge(eq(age))).thenReturn(Collections.singleton(student));
-        when(studentRepository.findByAgeBetween(eq(age), eq(age))).thenReturn(Collections.singleton(student));
+        when(studentRepository.findByAgeBetween(anyInt(),anyInt())).thenReturn(Collections.singleton(student));
         when(studentRepository.findById(eq(id))).thenReturn(Optional.of(student));
 
         mockMvc.perform(MockMvcRequestBuilders
@@ -103,7 +102,7 @@ public class StudentControllerTest {
                 .andExpect(jsonPath("$[0].age").value(age));
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/student/ages?min=" + age + "?max=" + age)
+                        .get("/student/ages?min=" + age + "&max=" + age)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").value(id))
