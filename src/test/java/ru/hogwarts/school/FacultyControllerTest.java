@@ -1,4 +1,4 @@
-package ru.hogwarts.school.FacultyTest;
+package ru.hogwarts.school;
 
 
 import org.json.JSONObject;
@@ -11,22 +11,14 @@ import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import ru.hogwarts.school.Controller.AvatarController;
 import ru.hogwarts.school.Controller.FacultyController;
-import ru.hogwarts.school.Controller.StudentController;
 import ru.hogwarts.school.Model.Faculty;
-import ru.hogwarts.school.Service.AvatarService;
 import ru.hogwarts.school.Service.FacultyService;
-import ru.hogwarts.school.Service.StudentService;
-import ru.hogwarts.school.repository.AvatarRepository;
 import ru.hogwarts.school.repository.FacultyRepository;
-import ru.hogwarts.school.repository.StudentRepository;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Optional;
 
-import static com.fasterxml.jackson.databind.type.LogicalType.Collection;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
@@ -61,6 +53,7 @@ public class FacultyControllerTest {
         JSONObject facultyObject = new JSONObject();
         facultyObject.put("name", name);
         facultyObject.put("color", color);
+        facultyObject.put("id", id);
 
         Faculty faculty = new Faculty();
         faculty.setId(id);
@@ -81,6 +74,7 @@ public class FacultyControllerTest {
                 .andExpect(jsonPath("$.id").value(id))
                 .andExpect(jsonPath("$.name").value(name))
                 .andExpect(jsonPath("$.color").value(color));
+
 
 
         mockMvc.perform(MockMvcRequestBuilders

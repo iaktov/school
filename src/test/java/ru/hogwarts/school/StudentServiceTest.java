@@ -1,4 +1,4 @@
-package ru.hogwarts.school.StudentTest;
+package ru.hogwarts.school;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

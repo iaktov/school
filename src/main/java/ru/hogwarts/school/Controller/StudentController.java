@@ -30,15 +30,21 @@ public class StudentController {
         return ResponseEntity.ok(student);
     }
 
-    //GET by age or between
+    //GET by age
     @GetMapping()
-    public ResponseEntity<Collection<Student>> getStudentsByAgeOrAgeBetween(@RequestParam(required = false) Integer age,
-                                                                            @RequestParam(required = false) Integer min,
-                                                                            @RequestParam(required = false) Integer max) {
+    public ResponseEntity<Collection<Student>> getStudentsByAgeOrAgeBetween(@RequestParam(required = false) Integer age) {
 
         if (age != null && age > 0) {
             return ResponseEntity.ok(studentService.findStudentByAge(age));
         }
+        return ResponseEntity.ok(Collections.emptyList());
+    }
+
+    //GET age between
+    @GetMapping("/ages")
+    public ResponseEntity<Collection<Student>> getStudentsByAgeBetween(@RequestParam(required = false) Integer min,
+                                                                       @RequestParam(required = false) Integer max) {
+
 
         if (min != null && min > 0 && max != null && max > 0) {
             return ResponseEntity.ok(studentService.findStudentByAgeBetweenYears(min, max));
@@ -46,6 +52,7 @@ public class StudentController {
 
         return ResponseEntity.ok(Collections.emptyList());
     }
+
     //GET student faculty
     @GetMapping("/{id}/faculty")
     public ResponseEntity<Faculty> getStudentsFaculty(@PathVariable Long id) {
@@ -59,8 +66,9 @@ public class StudentController {
 
     //POST
     @PostMapping
-    public Student createStudent(@RequestBody Student student) {
-        return studentService.createStudents(student);
+    public ResponseEntity<Student> createStudent(@RequestBody Student student) {
+        studentService.createStudents(student);
+        return ResponseEntity.ok(student);
     }
 
     //PUT
