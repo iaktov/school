@@ -20,6 +20,19 @@ from student
 order by age;
 
 
+SELECT count (name) as count FROM student;
+
+
+SELECT avg (age) as avg FROM student;
+
+SELECT count(id) as id
+From student;
+
+
+
+
+SELECT * from student order by id desc limit 5;
+
 
 
 

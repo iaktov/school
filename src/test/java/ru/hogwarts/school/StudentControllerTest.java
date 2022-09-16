@@ -62,7 +62,7 @@ public class StudentControllerTest {
 
         when(studentRepository.save(any(Student.class))).thenReturn(student);
         when(studentRepository.findByAge(eq(age))).thenReturn(Collections.singleton(student));
-        when(studentRepository.findByAgeBetween(anyInt(),anyInt())).thenReturn(Collections.singleton(student));
+        when(studentRepository.findByAgeBetween(eq(age),eq(age))).thenReturn(Collections.singleton(student));
         when(studentRepository.findById(eq(id))).thenReturn(Optional.of(student));
 
         mockMvc.perform(MockMvcRequestBuilders
