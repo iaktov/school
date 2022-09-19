@@ -28,11 +28,11 @@ public class StudentService {
         return studentRepository.findById(id).orElseThrow();
     }
 
-    public List<StudentsGetCount> getStudentsCount() {
+    public StudentsGetCount getStudentsCount() {
         return studentRepository.getStudentsCount();
     }
 
-    public List<StudentsGetAverageAge> getStudentsAverageAge() {
+    public StudentsGetAverageAge getStudentsAverageAge() {
         return studentRepository.getStudentsAverageAge();
     }
 

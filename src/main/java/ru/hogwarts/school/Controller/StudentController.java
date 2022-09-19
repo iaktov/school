@@ -66,13 +66,13 @@ public class StudentController {
 
     //GET students count
     @GetMapping("/count")
-    public ResponseEntity<List<StudentsGetCount>> getStudentsCount() {
+    public ResponseEntity<StudentsGetCount> getStudentsCount() {
         return ResponseEntity.ok(studentService.getStudentsCount());
     }
 
     //GET students avg age
     @GetMapping("/average_age")
-    public ResponseEntity<List<StudentsGetAverageAge>> getStudentsAverageAge() {
+    public ResponseEntity<StudentsGetAverageAge> getStudentsAverageAge() {
         return ResponseEntity.ok(studentService.getStudentsAverageAge());
     }
 

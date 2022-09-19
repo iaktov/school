@@ -2,7 +2,6 @@ package ru.hogwarts.school.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 import ru.hogwarts.school.Interface.StudentsGetCount;
 import ru.hogwarts.school.Interface.StudentsGetAverageAge;
@@ -20,10 +19,10 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     Collection<Student> findByAgeBetween(int min, int max);
 
     @Query(value = "SELECT count (name) as count FROM student", nativeQuery = true)
-    List<StudentsGetCount> getStudentsCount();
+    StudentsGetCount getStudentsCount();
 
     @Query(value = "SELECT avg (age) as avg FROM student", nativeQuery = true)
-    List<StudentsGetAverageAge> getStudentsAverageAge();
+    StudentsGetAverageAge getStudentsAverageAge();
 
     @Query(value = "SELECT * from student order by id desc limit 5", nativeQuery = true)
     List<StudentsGetLastFive> getStudentsByIdLastFive();
