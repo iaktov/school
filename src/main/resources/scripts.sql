@@ -7,9 +7,9 @@ from student;
 
 
 
-select *
-from student
-where name like '%o%';
+SELECT *
+FROM student
+WHERE name LIKE '%o%';
 
 select *
 from student
@@ -21,6 +21,8 @@ order by age;
 
 
 SELECT count (name) as count FROM student;
+
+
 
 
 SELECT avg (age) as avg FROM student;
