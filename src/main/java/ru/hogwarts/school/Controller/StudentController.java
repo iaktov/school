@@ -1,15 +1,17 @@
 package ru.hogwarts.school.Controller;
 
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.Model.Student;
 import ru.hogwarts.school.Service.StudentService;
 
 import java.util.Collection;
+import java.util.Collections;
 
 @RestController
-@RequestMapping("student")
+@RequestMapping("/student")
 public class StudentController {
 
     private final StudentService studentService;
@@ -30,26 +32,25 @@ public class StudentController {
 
     //GET by age
     @GetMapping()
-    public ResponseEntity<Collection<Student>> getStudentsByAge(Integer age) {
-        Collection<Student> student = studentService.findStudentByAge(age);
-        if (student == null) {
-            return ResponseEntity.notFound().build();
+    public ResponseEntity<Collection<Student>> getStudentsByAge(@RequestParam(required = false) int age) {
+        if (age > 0) {
+            return ResponseEntity.ok(studentService.findStudentByAge(age));
         }
-        return ResponseEntity.ok(student);
+        return ResponseEntity.ok(Collections.emptyList());
     }
 
     //POST
     @PostMapping
-    public Student createStudent(Student student) {
+    public Student createStudent(@RequestBody Student student) {
         return studentService.createStudents(student);
     }
 
     //PUT
-    @PutMapping
+    @PutMapping("{id}")
     public ResponseEntity<Student> editStudents(@RequestBody Student student) {
         Student findStudent = studentService.editStudent(student);
         if (findStudent == null) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
         return ResponseEntity.ok(student);
     }
@@ -57,7 +58,8 @@ public class StudentController {
 
     //DELETE
     @DeleteMapping("{id}")
-    public Student deleteStudent(@PathVariable Long id) {
-        return studentService.deleteStudent(id);
+    public ResponseEntity deleteStudent(@PathVariable Long id) {
+        studentService.deleteStudent(id);
+        return ResponseEntity.ok().build();
     }
 }
