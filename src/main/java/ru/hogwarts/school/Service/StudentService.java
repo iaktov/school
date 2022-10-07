@@ -2,45 +2,47 @@ package ru.hogwarts.school.Service;
 
 
 import org.springframework.stereotype.Service;
+import ru.hogwarts.school.Model.Faculty;
 import ru.hogwarts.school.Model.Student;
+import ru.hogwarts.school.repository.StudentRepository;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.List;
 
 @Service
 public class StudentService {
 
-    private final HashMap<Long, Student> students = new HashMap<>();
-    private long lastId = 0;
+    private final StudentRepository studentRepository;
+
+    public StudentService(StudentRepository studentRepository) {
+        this.studentRepository = studentRepository;
+    }
 
     public Student createStudents(Student student) {
-        student.setId(++lastId);
-        students.put(lastId,student);
-        return student;
+        return studentRepository.save(student);
     }
 
-    public Student findStudent(Long id) {
-        return students.get(id);
+    public Student findStudent(long id) {
+        return studentRepository.findById(id).orElse(null);
     }
+
 
     public Collection<Student> findStudentByAge(int age) {
-        Collection<Student>  newStudents = new ArrayList<>();
-        for (Student student:students.values()) {
-            if (student.getAge() == age) {
-                newStudents.add(student);
-            }
-        }
-        return newStudents;
+        return studentRepository.findByAge(age);
     }
+
+    public Collection<Student> findStudentByAgeBetweenYears(int min, int max) {
+        return studentRepository.findByAgeBetween(min, max);
+    }
+
+
 
     public Student editStudent(Student student) {
-        students.put(student.getId(), student);
-        return student;
+
+        return studentRepository.save(student);
     }
 
-    public Student deleteStudent(Long id) {
-        return students.remove(id);
+    public void deleteStudent(long id) {
+        studentRepository.deleteById(id);
     }
-
 }
