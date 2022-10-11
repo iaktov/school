@@ -1,5 +1,7 @@
 package ru.hogwarts.school.Service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -25,6 +27,8 @@ import static java.nio.file.StandardOpenOption.CREATE_NEW;
 @Transactional
 public class AvatarService {
 
+    Logger logger = LoggerFactory.getLogger(AvatarService.class);
+
     @Value("${path.to.avatars.folder}")
     private String avatarsDir;
 
@@ -37,11 +41,13 @@ public class AvatarService {
     }
 
     public Avatar findAvatar(long id) {
+            logger.info("Was invoked method for find avatar");
         return avatarRepository.findByStudentId(id).orElse(new Avatar());
     }
 
     public List<Avatar> getAllAvatars(Integer pageNumber, Integer pageSize) {
         PageRequest pageRequest = PageRequest.of(pageNumber-1, pageSize);
+        logger.info("Was invoked method for get all avatars");
         return avatarRepository.findAll(pageRequest).getContent();
     }
 
@@ -64,6 +70,7 @@ public class AvatarService {
         avatar.setFileSize(avatarFile.getSize());
         avatar.setMediaType(avatarFile.getContentType());
         avatar.setData(generateDataForDB(filePath));
+        logger.info("Was invoked method for upload avatar");
         avatarRepository.save(avatar);
     }
 
@@ -83,6 +90,7 @@ public class AvatarService {
             graphics.dispose();
 
             ImageIO.write(preview, getExtensions(filePath.getFileName().toString()), baos);
+            logger.info("Was invoked method for generate small avatar");
             return baos.toByteArray();
         }
     }
@@ -90,6 +98,7 @@ public class AvatarService {
 
 
     private String getExtensions(String fileName) {
+        logger.info("Was invoked method for get extensions");
         return fileName.substring(fileName.lastIndexOf(".") + 1);
     }
 
