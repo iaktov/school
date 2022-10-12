@@ -13,6 +13,7 @@ import ru.hogwarts.school.Service.StudentService;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.OptionalDouble;
 
 @RestController
 @RequestMapping("/student")
@@ -82,6 +83,18 @@ public class StudentController {
         return ResponseEntity.ok(studentService.getStudentsByIdLastFive());
     }
 
+    //GET students name that start with letter a
+    @GetMapping("students_name_that_start_with_letter_a")
+    public ResponseEntity<List<String>> getStudentsName() {
+        return ResponseEntity.ok(studentService.getStudentsName());
+    }
+
+    //GET students average age by stream
+    @GetMapping("get_average_age_by_stream")
+    public ResponseEntity<OptionalDouble> getAverageAgeByStream() {
+        return ResponseEntity.ok(studentService.getStudentsAverageAgeByStream());
+    }
+
 
     //POST
     @PostMapping
@@ -96,6 +109,7 @@ public class StudentController {
         studentService.editStudent(student);
         return ResponseEntity.ok(student);
     }
+
 
 
     //DELETE

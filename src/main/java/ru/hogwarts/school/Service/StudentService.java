@@ -12,11 +12,13 @@ import ru.hogwarts.school.repository.StudentRepository;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.OptionalDouble;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentService {
 
-    Logger logger = LoggerFactory.getLogger(StudentService.class);
+    private final Logger logger = LoggerFactory.getLogger(StudentService.class);
 
     private final StudentRepository studentRepository;
 
@@ -69,5 +71,25 @@ public class StudentService {
     public void deleteStudent(long id) {
         logger.warn("Was invoked method for delete student by id");
         studentRepository.deleteById(id);
+    }
+
+    public List<String> getStudentsName() {
+        logger.info("Was invoked method for get students name that start with letter a");
+        return studentRepository.findAll()
+                .stream()
+                .map(Student::getName)
+                .map(String::toUpperCase)
+                .filter(s -> s.charAt(0) == 'A')
+                .sorted()
+                .collect(Collectors.toList());
+    }
+
+    public OptionalDouble getStudentsAverageAgeByStream() {
+        logger.info("Was invoked method for get average age student by stream");
+        return studentRepository.findAll()
+                .stream()
+                .map(Student::getAge)
+                .mapToInt(value -> value)
+                .average();
     }
 }
