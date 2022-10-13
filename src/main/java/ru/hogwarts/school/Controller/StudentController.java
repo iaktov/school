@@ -95,6 +95,18 @@ public class StudentController {
         return ResponseEntity.ok(studentService.getStudentsAverageAgeByStream());
     }
 
+    //GET first six students name with 2 threads
+    @GetMapping("/getNameByFlow")
+    public void getName() {
+        studentService.getStudentsNameByFlow();
+    }
+    @GetMapping("/getNameByFlowSynchronize")
+    public void getNameSynchronize() {
+        studentService.getStudentsNameByFlowSynchronize();
+    }
+
+
+
 
     //POST
     @PostMapping
