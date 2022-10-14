@@ -1,45 +1,64 @@
 package ru.hogwarts.school.Service;
 
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.Model.Faculty;
+import ru.hogwarts.school.repository.FacultyRepository;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-
+import java.util.Comparator;
+import java.util.Optional;
 
 @Service
 public class FacultyService {
 
-    private final HashMap<Long, Faculty> faculties = new HashMap<>();
-    private long lastId = 0;
+    private final Logger logger = LoggerFactory.getLogger(FacultyService.class);
 
-    public Faculty createStudents(Faculty faculty) {
-        faculty.setId(++lastId);
-        faculties.put(lastId,faculty);
-        return faculty;
+    private final FacultyRepository facultyRepository;
+
+    public FacultyService(FacultyRepository facultyRepository) {
+
+        this.facultyRepository = facultyRepository;
+    }
+
+    public Faculty createFaculty(Faculty faculty) {
+        logger.info("Was invoked method for create faculty");
+        return facultyRepository.save(faculty);
     }
 
     public Collection<Faculty> findFacultyByColor(String color) {
-        Collection<Faculty>  newFaculty = new ArrayList<>();
-        for (Faculty faculty:faculties.values()) {
-            if (faculty.getColor().equals(color)) {
-                newFaculty.add(faculty);
-            }
-        }
-        return newFaculty;
+        logger.info("Was invoked method for find faculty by color");
+        return facultyRepository.findByColorIgnoreCase(color);
     }
 
-    public Faculty findStudent(Long id) {
-        return faculties.get(id);
+    public Collection<Faculty> findFacultyByName(String name) {
+        logger.debug("Was invoked method for find faculty by name");
+        return facultyRepository.findByNameIgnoreCase(name);
     }
 
-    public Faculty editStudent(Faculty faculty) {
-        faculties.put(faculty.getId(), faculty);
-        return faculty;
+    public Faculty findFaculty(long id) {
+        logger.debug("Was invoked method for find faculty by id");
+        return facultyRepository.findById(id).orElseThrow();
     }
 
-    public Faculty deleteStudent(Long id) {
-        return faculties.remove(id);
+    public Optional<String> findLongestNameFaculty() {
+        logger.info("Was invoked method for find the longest faculty name");
+        return facultyRepository.findAll()
+                .stream()
+                .map(Faculty::getName)
+                .max(Comparator.comparing(String::length));
+    }
+
+
+    public Faculty editFaculty(Faculty faculty) {
+        logger.info("Was invoked method for edit faculty");
+        return facultyRepository.save(faculty);
+    }
+
+    public void deleteFaculty(long id) {
+        logger.debug("Was invoked method for delete faculty by id");
+        facultyRepository.deleteById(id);
     }
 }
